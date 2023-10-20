@@ -1,7 +1,12 @@
 import React from 'react';
 import './DataTable.css';
+import { BikeApiResponse } from '../../type';
 
-const DataTable = () => {
+type DataTableProps = {
+  data: BikeApiResponse;
+};
+
+const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <div className='overflow-x-auto w-full mt-5'>
       <table>
@@ -11,38 +16,19 @@ const DataTable = () => {
             <td>區域</td>
             <td>站點名稱</td>
             <td>可借車輛</td>
-            <td>可借車輛</td>
+            <td>可還車輛</td>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>台北市</td>
-            <td>松山區</td>
-            <td>台北市台北市台北市</td>
-            <td>12</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>台北市</td>
-            <td>松山區</td>
-            <td>台北市台北市台北市</td>
-            <td>12</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>台北市</td>
-            <td>松山區</td>
-            <td>台北市台北市台北市</td>
-            <td>12</td>
-            <td>12</td>
-          </tr>
-          <tr>
-            <td>台北市</td>
-            <td>松山區</td>
-            <td>台北市台北市台北市</td>
-            <td>12</td>
-            <td>12</td>
-          </tr>
+          {data.map((item) => (
+            <tr key={item.sno}>
+              <td>台北市</td>
+              <td>{item.sarea}</td>
+              <td>{item.sna}</td>
+              <td>{item.tot}</td>
+              <td>{item.bemp}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

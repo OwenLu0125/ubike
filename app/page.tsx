@@ -1,3 +1,4 @@
+'use client';
 import * as React from 'react';
 import Image from 'next/image';
 import logo from '../public/logo.svg';
@@ -6,6 +7,15 @@ import bike from '../public/bike.svg';
 import DataTable from './components/DataTable/DataTable';
 
 export default function MyComponent() {
+  const [data, setData] = React.useState([]);
+  React.useEffect(() => {
+    fetch(
+      'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json'
+    )
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+
   return (
     <div className=' flex w-[auto] flex-col items-center px-10'>
       <div className='navbar flex relative'>
@@ -115,7 +125,7 @@ export default function MyComponent() {
         </div>
         <Image src={bike} alt='bike' className='hidden md:flex self-end	' />
       </div>
-      <DataTable />
+      <DataTable data={data} />
     </div>
   );
 }
