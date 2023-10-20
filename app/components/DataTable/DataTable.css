@@ -1,0 +1,39 @@
+@media (max-width: 768px) {
+  table {
+    border-radius: 8px !important;
+  }
+}
+
+table {
+  border-collapse: separate;
+  border: 0.5px solid #aeaeae;
+  border-spacing: 0;
+  width: 100%;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #b5cc22;
+  color: white;
+}
+
+thead td {
+  padding: 10px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f6f6f6;
+}
+
+tbody td:nth-child(4),
+tbody td:nth-child(5) {
+  color: #b5cc22;
+}
+
+tbody td {
+  padding: 10px;
+  text-align: center;
+  color: #323232;
+}
