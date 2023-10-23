@@ -4,9 +4,10 @@ import { BikeApiResponse } from '../../type';
 
 type DataTableProps = {
   data: BikeApiResponse;
+  selectedCity: string; 
 };
 
-const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<DataTableProps> = ({ data, selectedCity }) => {
   return (
     <div className='overflow-x-auto w-full mt-5'>
       <table>
@@ -22,7 +23,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         <tbody>
           {data.map((item) => (
             <tr key={item.sno}>
-              <td>台北市</td>
+              <td>{selectedCity}</td>
               <td>{item.sarea}</td>
               <td>{item.sna}</td>
               <td>{item.tot}</td>
