@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import logo from '../../../public/logo.svg';
+import Link from 'next/link';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -12,27 +13,27 @@ const Navbar = () => {
         <nav className='nav'>
           <ul className='nav-list'>
             <li className='nav-item'>
-              <a className='nav-link' href='#activity'>
+              <Link className='nav-link' href='/users'>
                 使用說明
-              </a>
+              </Link>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#album'>
+              <a className='nav-link' href='/#price'>
                 收費方式
               </a>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#album'>
+              <a className='nav-link' href='/#album'>
                 站點資訊
               </a>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#adoption'>
+              <a className='nav-link' href='/#new'>
                 最新消息
               </a>
             </li>
             <li className='nav-item'>
-              <a className='nav-link' href='#adoption'>
+              <a className='nav-link' href='/#activity'>
                 活動專區
               </a>
             </li>

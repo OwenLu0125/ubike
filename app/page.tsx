@@ -1,5 +1,7 @@
 'use client';
 import * as React from 'react';
+import Head from 'next/head';
+import Link from 'next/link';
 import Image from 'next/image';
 import bike from '../public/bike.svg';
 import DataTable from './components/DataTable/DataTable';
@@ -116,57 +118,62 @@ export default function MyComponent() {
         [selectedCity]: updatedDistricts,
       }));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectAll]);
 
   return (
-    <div className='flex flex-col items-center px-10'>
-      <Navbar />
-      <div className='w-full mt-10 md:flex'>
-        <div className='w-full relative '>
-          <h1 className='top-10 relative text-primary text-lg font-bold self-start'>
-            站點資訊
-          </h1>
-          <select
-            className='select select-bordered w-full relative mt-14'
-            value={selectedCity}
-            onChange={(e) => setSelectedCity(e.target.value)}
-            >
-            <option value='台北市'>台北市</option>
-            <option value='高雄市'>高雄市</option>
-          </select>
-          <div className='form-control mt-5'>
-            <label className='label cursor-pointer flex-row justify-start gap-2'>
-              <input
-                type='checkbox'
-                className='checkbox checkbox-primary'
-                onClick={() => setSelectAll(!selectAll)} // 切換選擇全部狀態
-              />
-              <span className='label-text text-black'>全部勾選</span>
-            </label>
-            <div className='grid grid-cols-3 mt-3 md:grid md:grid-cols-4'>
-              {Object.keys(selectedDistricts).map((district) => (
-                <label
-                  key={district}
-                  className='label cursor-pointer flex-row justify-start gap-2'>
-                  <input
-                    type='checkbox'
-                    className='checkbox checkbox-primary'
-                    value={district}
-                    checked={selectedDistricts[district]}
-                    onChange={() =>
-                      handleDistrictChange(selectedCity, district)
-                    }
-                  />
-                  <span className='label-text text-black'>{district}</span>
-                </label>
-              ))}
+    <>
+      <Head>
+        <Link rel="icon" href="/public/bike.svg" />
+        <title>First Post</title>
+      </Head>
+      <div className='flex flex-col items-center px-10'>
+        <Navbar />
+        <div className='w-full mt-10 md:flex'>
+          <div className='w-full relative '>
+            <h1 className='top-10 relative text-primary text-lg font-bold self-start'>
+              站點資訊
+            </h1>
+            <select
+              className='select select-bordered w-full relative mt-14'
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}>
+              <option value='台北市'>台北市</option>
+              <option value='高雄市'>高雄市</option>
+            </select>
+            <div className='form-control mt-5'>
+              <label className='label cursor-pointer flex-row justify-start gap-2'>
+                <input
+                  type='checkbox'
+                  className='checkbox checkbox-primary'
+                  onClick={() => setSelectAll(!selectAll)} // 切換選擇全部狀態
+                />
+                <span className='label-text text-black'>全部勾選</span>
+              </label>
+              <div className='grid grid-cols-3 mt-3 md:grid md:grid-cols-4'>
+                {Object.keys(selectedDistricts).map((district) => (
+                  <label
+                    key={district}
+                    className='label cursor-pointer flex-row justify-start gap-2'>
+                    <input
+                      type='checkbox'
+                      className='checkbox checkbox-primary'
+                      value={district}
+                      checked={selectedDistricts[district]}
+                      onChange={() =>
+                        handleDistrictChange(selectedCity, district)
+                      }
+                    />
+                    <span className='label-text text-black'>{district}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
+          <Image src={bike} alt='bike' className='hidden md:flex self-end' />
         </div>
-        <Image src={bike} alt='bike' className='hidden md:flex self-end' />
+        <DataTable data={filteredData} selectedCity={selectedCity} />
       </div>
-      <DataTable data={filteredData} selectedCity={selectedCity} />
-    </div>
+    </>
   );
 }
