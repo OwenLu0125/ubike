@@ -123,10 +123,6 @@ export default function MyComponent() {
 
   return (
     <>
-      <Head>
-        <Link rel="icon" href="/public/bike.svg" />
-        <title>First Post</title>
-      </Head>
       <div className='flex flex-col items-center px-10'>
         <Navbar />
         <div className='w-full mt-10 md:flex'>
