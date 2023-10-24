@@ -6,17 +6,28 @@ import Image from 'next/image';
 import bike from '../public/bike.svg';
 import DataTable from './components/DataTable/DataTable';
 import Navbar from './components/Navbar/Navbar';
+import DropdownComponent from './components/Input';
 import { BikeData } from './type';
 import { dummy } from '../public/dummyData';
 
 type DistrictData = {
   [key: string]: boolean;
 };
-
+const cityOptions = [
+  '台北市',
+  '新北市',
+  '桃園市',
+  '台中市',
+  '台南市',
+  '高雄市',
+]; // 所有可選的城市
 export default function MyComponent() {
   const [data, setData] = React.useState<BikeData[]>([]);
-  const [selectAll, setSelectAll] = React.useState(false);
+  const [selectAll, setSelectAll] = React.useState(true);
   const [selectedCity, setSelectedCity] = React.useState('台北市'); // 預設選擇台北市
+  const [inputText, setInputText] = React.useState(''); // input文字區
+  const [filteredCityOptions, setFilteredCityOptions] =
+    React.useState<string[]>(cityOptions);
   const [cityData, setCityData] = React.useState<{
     [key: string]: DistrictData;
   }>({
@@ -63,6 +74,22 @@ export default function MyComponent() {
       茂林區: false,
       田寮區: false,
     },
+    台中市: {
+      杉林區: false,
+      桃源區: false,
+      那瑪夏區: false,
+      茂林區: false,
+      田寮區: false,
+    },
+    桃園市: {
+      桃園區: false,
+      中壢區: false,
+      八德區: false,
+      平鎮區: false,
+      大溪區: false,
+      楊梅區: false,
+      龜山區: false,
+    }, // ... 其他縣市的行政區
   });
 
   // 處理選項的變化，以對應區域的狀態
@@ -91,8 +118,7 @@ export default function MyComponent() {
   const selectedDistricts = cityData[selectedCity];
 
   const filteredData = data.filter((bike) => {
-    console.log(bike.sarea, selectedDistricts[bike.sarea]);
-    return selectedDistricts[bike.sarea];
+    return selectedDistricts && selectedDistricts[bike.sarea];
   });
 
   React.useEffect(() => {
@@ -121,6 +147,22 @@ export default function MyComponent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectAll]);
 
+  // 處理 input 文字變化
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchText = e.target.value;
+    const filteredCities = cityOptions.filter((city) =>
+      city.includes(searchText)
+    );
+    setInputText(searchText);
+    setFilteredCityOptions(cityOptions);
+    setFilteredCityOptions(filteredCities);
+    if (filteredCities.length > 0) {
+      setSelectedCity(filteredCities[0]);
+    } else {
+      setSelectedCity('');
+    }
+  };
+
   return (
     <>
       <div className='flex flex-col items-center px-10'>
@@ -130,39 +172,60 @@ export default function MyComponent() {
             <h1 className='top-10 relative text-primary text-lg font-bold self-start'>
               站點資訊
             </h1>
-            <select
-              className='select select-bordered w-full relative mt-14'
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}>
-              <option value='台北市'>台北市</option>
-              <option value='高雄市'>高雄市</option>
-            </select>
-            <div className='form-control mt-5'>
-              <label className='label cursor-pointer flex-row justify-start gap-2'>
-                <input
-                  type='checkbox'
-                  className='checkbox checkbox-primary'
-                  onClick={() => setSelectAll(!selectAll)} // 切換選擇全部狀態
-                />
-                <span className='label-text text-black'>全部勾選</span>
-              </label>
-              <div className='grid grid-cols-3 mt-3 md:grid md:grid-cols-4'>
-                {Object.keys(selectedDistricts).map((district) => (
-                  <label
-                    key={district}
-                    className='label cursor-pointer flex-row justify-start gap-2'>
-                    <input
-                      type='checkbox'
-                      className='checkbox checkbox-primary'
-                      value={district}
-                      checked={selectedDistricts[district]}
-                      onChange={() =>
-                        handleDistrictChange(selectedCity, district)
-                      }
-                    />
-                    <span className='label-text text-black'>{district}</span>
-                  </label>
+            <div className='md:flex md:gap-x-4 md:flex-row-reverse'>
+              <input
+                type='text'
+                placeholder='搜尋縣市'
+                className='input input-bordered input-secondary w-full relative mt-14 md:w-3/4'
+                value={inputText}
+                onChange={handleInputChange}
+              />
+              <select
+                className='select select-bordered w-full relative mt-5 md:mt-14 md:w-1/4'
+                value={selectedCity}
+                onChange={(e) => setSelectedCity(e.target.value)}>
+                {filteredCityOptions.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
                 ))}
+              </select>
+            </div>
+            <div className='form-control mt-5'>
+              <div className='grid grid-cols-3'>
+                <label className='label cursor-pointer justify-start gap-2'>
+                  <input
+                    type='checkbox'
+                    className='checkbox checkbox-primary'
+                    defaultChecked={true}
+                    onClick={() => setSelectAll(!selectAll)} // 切換選擇全部狀態
+                  />
+                  <span className='label-text text-black'>全部勾選</span>
+                </label>
+                <button
+                  className='label-text text-secondary border-solid rounded'
+                  onClick={() => setInputText('')}>
+                  清除文字
+                </button>
+              </div>
+              <div className='grid grid-cols-3 mt-3 md:grid md:grid-cols-4'>
+                {selectedDistricts &&
+                  Object.keys(selectedDistricts).map((district) => (
+                    <label
+                      key={district}
+                      className='label cursor-pointer flex-row justify-start gap-2'>
+                      <input
+                        type='checkbox'
+                        className='checkbox checkbox-primary'
+                        value={district}
+                        checked={selectedDistricts[district]}
+                        onChange={() =>
+                          handleDistrictChange(selectedCity, district)
+                        }
+                      />
+                      <span className='label-text text-black'>{district}</span>
+                    </label>
+                  ))}
               </div>
             </div>
           </div>
