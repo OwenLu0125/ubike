@@ -7,12 +7,7 @@ const Navbar = () => {
   return (
     <>
       <header>
-        <Image
-          className='navbar-brand'
-          src={logo}
-          alt='logo'
-          
-        />
+        <Image className='navbar-brand' src={logo} alt='logo' />
         <input type='checkbox' className='navbar-toggle' id='navbar-toggle' />
         <nav className='nav'>
           <ul className='nav-list'>
@@ -27,6 +22,11 @@ const Navbar = () => {
               </a>
             </li>
             <li className='nav-item'>
+              <a className='nav-link' href='#album'>
+                站點資訊
+              </a>
+            </li>
+            <li className='nav-item'>
               <a className='nav-link' href='#adoption'>
                 最新消息
               </a>
@@ -36,12 +36,8 @@ const Navbar = () => {
                 活動專區
               </a>
             </li>
-            <li className='nav-item'>
-              <a className='nav-link' href='#adoption'>
-                登入
-              </a>
-            </li>
           </ul>
+          <button className='btn btn-primary'>登入</button>
         </nav>
         <label className='navbar-toggle-label' htmlFor='navbar-toggle'>
           <span className='hamburger'></span>

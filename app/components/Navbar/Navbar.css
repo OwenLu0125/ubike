@@ -1,7 +1,6 @@
-/*Main Header*/
 header {
   width: 100vw;
-  height: 60px;
+  height: 72px;
   text-align: center;
   background: #ffffff;
   position: fixed;
@@ -20,6 +19,24 @@ header {
   transform-origin: top;
   transform: scale(1, 0);
 }
+.nav-list {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  left: 7%;
+  top: 2rem;
+}
+.btn-primary {
+  position: fixed;
+  width: auto;
+  background-color: #fff;
+  color: #b5cc22;
+  bottom: 20rem;
+  left: 7%;
+  border: 0px;
+  border-radius: 28px;
+  padding: auto;
+}
 .navbar-brand {
   color: #267b98;
   font-size: 1.5rem;
@@ -33,6 +50,7 @@ header {
 }
 .nav-link {
   color: #ffffff;
+  font-size: larger;
 }
 .nav-link:hover {
   color: #677510;
@@ -88,6 +106,22 @@ header {
 .hamburger::after {
   bottom: 8px;
 }
+/* 修改 hamburger 切換成 x 的樣式 */
+.navbar-toggle:checked ~ .navbar-toggle-label .hamburger::before {
+  top: 0;
+  transform: rotate(45deg); /* 旋轉 45 度 */
+  background: #b5cc22;
+  width: 24px;
+}
+.navbar-toggle:checked ~ .navbar-toggle-label .hamburger::after {
+  bottom: 0;
+  transform: rotate(-45deg); /* 旋轉 -45 度 */
+  background: #b5cc22;
+  width: 24px;
+}
+.navbar-toggle:checked ~ .navbar-toggle-label .hamburger {
+  background: #fff;
+}
 .navbar-toggle {
   /*不佔空間*/
   visibility: hidden;
@@ -102,7 +136,10 @@ header {
   /*導覽列 CSS 樣式設定復原*/
   .nav {
     all: unset;
-    grid-column: 3 / 4;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-left: 2rem;
   }
   /*導覽項目 CSS 樣式設定復原*/
   .nav-item {
@@ -128,12 +165,22 @@ header {
     grid-column: 2 / 3;
   }
   .nav-list {
+    all: unset;
+    list-style: none; /* 移除點點 */
     height: 100%;
     display: grid;
     grid-auto-flow: column;
     justify-content: start;
     align-items: center;
     grid-gap: 2rem;
-    margin-left: 5rem;
+  }
+  .btn-primary {
+    all: unset;
+    background-color: #b5cc22;
+    color: #fff;
+    width: 4rem;
+    height: auto;
+    margin: 0.5rem;
+    border-radius: 28px;
   }
 }
