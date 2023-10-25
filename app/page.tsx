@@ -1,96 +1,50 @@
 'use client';
 import * as React from 'react';
-import Head from 'next/head';
-import Link from 'next/link';
 import Image from 'next/image';
 import bike from '../public/bike.svg';
 import DataTable from './components/DataTable/DataTable';
 import Navbar from './components/Navbar/Navbar';
-import DropdownComponent from './components/Input';
 import { BikeData } from './type';
-import { dummy } from '../public/dummyData';
+import { dummy, area_data } from '../public/dummyData';
 
 type DistrictData = {
   [key: string]: boolean;
 };
-const cityOptions = [
-  '台北市',
-  '新北市',
-  '桃園市',
-  '台中市',
-  '台南市',
-  '高雄市',
-]; // 所有可選的城市
+
+type CityData = {
+  [key: string]: DistrictData;
+};
+
+type CityOption = string;
+
+const convertCityData = (rawCityData: Record<string, string[]>): CityData => {
+  const cityData: CityData = {};
+
+  for (const city in rawCityData) {
+    cityData[city] = {};
+
+    for (const district of rawCityData[city]) {
+      cityData[city][district] = false;
+    }
+  }
+
+  return cityData;
+};
+
+const getCityOptions = (data: Record<string, string[]>): CityOption[] => {
+  return Object.keys(data);
+};
+
 export default function MyComponent() {
   const [data, setData] = React.useState<BikeData[]>([]);
   const [selectAll, setSelectAll] = React.useState(true);
   const [selectedCity, setSelectedCity] = React.useState('台北市'); // 預設選擇台北市
   const [inputText, setInputText] = React.useState(''); // input文字區
+  const initialCityOptions: CityOption[] = getCityOptions(area_data);
   const [filteredCityOptions, setFilteredCityOptions] =
-    React.useState<string[]>(cityOptions);
-  const [cityData, setCityData] = React.useState<{
-    [key: string]: DistrictData;
-  }>({
-    台北市: {
-      大安區: false,
-      大同區: false,
-      士林區: false,
-      文山區: false,
-      中正區: false,
-      中山區: false,
-      內湖區: false,
-      北投區: false,
-      松山區: false,
-      南港區: false,
-      信義區: false,
-      萬華區: false,
-      臺大公館校區: false,
-    },
-    高雄市: {
-      鼓山區: false,
-      三民區: false,
-      苓雅區: false,
-      楠梓區: false,
-      前鎮區: false,
-      小港區: false,
-      鳳山區: false,
-      林園區: false,
-      大寮區: false,
-      鳥松區: false,
-      旗津區: false,
-      大社區: false,
-      仁武區: false,
-      龜山區: false,
-      左營區: false,
-      美麗島區: false,
-      橋頭區: false,
-      大樹區: false,
-      燕巢區: false,
-      六龜區: false,
-      甲仙區: false,
-      杉林區: false,
-      桃源區: false,
-      那瑪夏區: false,
-      茂林區: false,
-      田寮區: false,
-    },
-    台中市: {
-      杉林區: false,
-      桃源區: false,
-      那瑪夏區: false,
-      茂林區: false,
-      田寮區: false,
-    },
-    桃園市: {
-      桃園區: false,
-      中壢區: false,
-      八德區: false,
-      平鎮區: false,
-      大溪區: false,
-      楊梅區: false,
-      龜山區: false,
-    }, // ... 其他縣市的行政區
-  });
+    React.useState<CityOption[]>(initialCityOptions);
+  const initialCityData: CityData = convertCityData(area_data);
+  const [cityData, setCityData] = React.useState<CityData>(initialCityData);
 
   // 處理選項的變化，以對應區域的狀態
   const handleDistrictChange = (city: string, district: string) => {
