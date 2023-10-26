@@ -521,7 +521,7 @@ export const dummy = [
   },
 ];
  export const area_data = {
-  台北市: [
+  臺北市: [
     '中正區',
     '大同區',
     '中山區',

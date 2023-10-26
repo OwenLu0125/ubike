@@ -4,6 +4,9 @@ import Image from 'next/image';
 import bike from '../public/bike.svg';
 import DataTable from './components/DataTable/DataTable';
 import Navbar from './components/Navbar/Navbar';
+import FormControl from '@mui/joy/FormControl';
+import { IconButton, Input } from '@mui/joy';
+import Autocomplete from '@mui/joy/Autocomplete';
 import { BikeData } from './type';
 import { dummy, area_data } from '../public/dummyData';
 
@@ -38,13 +41,13 @@ const getCityOptions = (data: Record<string, string[]>): CityOption[] => {
 export default function MyComponent() {
   const [data, setData] = React.useState<BikeData[]>([]);
   const [selectAll, setSelectAll] = React.useState(true);
-  const [selectedCity, setSelectedCity] = React.useState('台北市'); // 預設選擇台北市
-  const [inputText, setInputText] = React.useState(''); // input文字區
+  const [selectedCity, setSelectedCity] = React.useState('臺北市'); // 縣市選項
+  const [cityInputText, setCityInputText] = React.useState(''); // 縣市搜尋
+  const [siteInputText, setSiteInputText] = React.useState(''); // 站點搜尋
   const initialCityOptions: CityOption[] = getCityOptions(area_data);
-  const [filteredCityOptions, setFilteredCityOptions] =
-    React.useState<CityOption[]>(initialCityOptions);
   const initialCityData: CityData = convertCityData(area_data);
   const [cityData, setCityData] = React.useState<CityData>(initialCityData);
+  const [loading, setLoading] = React.useState(false); // 資料是否載入中
 
   // 處理選項的變化，以對應區域的狀態
   const handleDistrictChange = (city: string, district: string) => {
@@ -57,16 +60,25 @@ export default function MyComponent() {
     }));
   };
 
+  // 当选中城市发生变化时加载数据
   React.useEffect(() => {
-    if (selectedCity === '高雄市') {
-      setData(dummy); // 若選高雄市，則用假資料
-    } else {
-      fetch(
-        'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json'
-      )
-        .then((res) => res.json())
-        .then((fetchedData: BikeData[]) => setData(fetchedData));
-    }
+    const loadData = (city: string) => {
+      setLoading(true);
+      if (city === '高雄市') {
+        setData(dummy);
+        setLoading(false);
+      } else if (city === '臺北市') {
+        fetch(
+          'https://tcgbusfs.blob.core.windows.net/dotapp/youbike/v2/youbike_immediate.json'
+        )
+          .then((res) => res.json())
+          .then((fetchedData: BikeData[]) => {
+            setData(fetchedData);
+            setLoading(false);
+          });
+      }
+    };
+    loadData(selectedCity);
   }, [selectedCity]);
 
   const selectedDistricts = cityData[selectedCity];
@@ -75,6 +87,7 @@ export default function MyComponent() {
     return selectedDistricts && selectedDistricts[bike.sarea];
   });
 
+  // checkbox selected function
   React.useEffect(() => {
     if (selectAll) {
       const updatedDistricts: DistrictData = {};
@@ -101,49 +114,56 @@ export default function MyComponent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectAll]);
 
-  // 處理 input 文字變化
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const searchText = e.target.value;
-    const filteredCities = cityOptions.filter((city) =>
-      city.includes(searchText)
-    );
-    setInputText(searchText);
-    setFilteredCityOptions(cityOptions);
-    setFilteredCityOptions(filteredCities);
-    if (filteredCities.length > 0) {
-      setSelectedCity(filteredCities[0]);
-    } else {
-      setSelectedCity('');
-    }
-  };
+  React.useEffect(() => {}, []);
 
   return (
     <>
       <div className='flex flex-col items-center px-10'>
         <Navbar />
-        <div className='w-full mt-10 md:flex'>
+        <div className='w-full mt-10 md:flex md:-mt-6'>
           <div className='w-full relative '>
-            <h1 className='top-10 relative text-primary text-lg font-bold self-start'>
+            <h1 className=' relative mt-12 text-primary text-lg font-bold self-start'>
               站點資訊
             </h1>
-            <div className='md:flex md:gap-x-4 md:flex-row-reverse'>
-              <input
-                type='text'
-                placeholder='搜尋縣市'
-                className='input input-bordered input-secondary w-full relative mt-14 md:w-3/4'
-                value={inputText}
-                onChange={handleInputChange}
-              />
-              <select
-                className='select select-bordered w-full relative mt-5 md:mt-14 md:w-1/4'
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}>
-                {filteredCityOptions.map((city) => (
-                  <option key={city} value={city}>
-                    {city}
-                  </option>
-                ))}
-              </select>
+            <div className='relative mt-5 d:flex md:gap-x-4 md:flex-row-reverse'>
+              <FormControl id='controllable-states-demo'>
+                <Autocomplete
+                  placeholder='選擇縣市'
+                  value={selectedCity}
+                  onChange={(event, newValue) => {
+                    console.log(newValue);
+                    setSelectedCity(newValue as string);
+                  }}
+                  inputValue={cityInputText}
+                  onInputChange={(event, newInputValue) => {
+                    setCityInputText(newInputValue);
+                  }}
+                  options={initialCityOptions}
+                  sx={{ width: 1 }}
+                />
+                <Input
+                  className='mt-5'
+                  endDecorator={
+                    <IconButton>
+                      {' '}
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='w-6 h-6'>
+                        <path
+                          fillRule='evenodd'
+                          d='M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </IconButton>
+                  }
+                  placeholder='搜尋站點'
+                  onChange={(e) => setSiteInputText(e.target.value)}
+                  sx={{ width: 1 }}
+                />
+              </FormControl>
             </div>
             <div className='form-control mt-5'>
               <div className='grid grid-cols-3'>
@@ -156,11 +176,6 @@ export default function MyComponent() {
                   />
                   <span className='label-text text-black'>全部勾選</span>
                 </label>
-                <button
-                  className='label-text text-secondary border-solid rounded'
-                  onClick={() => setInputText('')}>
-                  清除文字
-                </button>
               </div>
               <div className='grid grid-cols-3 mt-3 md:grid md:grid-cols-4'>
                 {selectedDistricts &&
@@ -185,7 +200,11 @@ export default function MyComponent() {
           </div>
           <Image src={bike} alt='bike' className='hidden md:flex self-end' />
         </div>
-        <DataTable data={filteredData} selectedCity={selectedCity} />
+        <DataTable
+          data={filteredData}
+          selectedCity={selectedCity}
+          siteInputText={siteInputText}
+        />
       </div>
     </>
   );

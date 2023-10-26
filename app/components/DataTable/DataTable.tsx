@@ -4,10 +4,24 @@ import { BikeApiResponse } from '../../type';
 
 type DataTableProps = {
   data: BikeApiResponse;
-  selectedCity: string; 
+  selectedCity: string;
+  siteInputText: string;
 };
 
-const DataTable: React.FC<DataTableProps> = ({ data, selectedCity }) => {
+const DataTable: React.FC<DataTableProps> = ({
+  data,
+  selectedCity,
+  siteInputText,
+}) => {
+  const [filteredData, setFilteredData] = React.useState<BikeApiResponse>(data);
+
+  React.useEffect(() => {
+    const filtered = data.filter((item) => {
+      return item.sna.includes(siteInputText);
+    });
+    setFilteredData(filtered);
+  }, [siteInputText, data]);
+
   return (
     <div className='overflow-x-auto w-full mt-5'>
       <table>
@@ -21,7 +35,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, selectedCity }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {filteredData.map((item) => (
             <tr key={item.sno}>
               <td>{selectedCity}</td>
               <td>{item.sarea}</td>

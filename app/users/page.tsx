@@ -1,7 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-const Pagetest = () => {
-  return <h1>測試頁面</h1>;
-};
+const page = () => {
+  return (
+    <>
+    <h1>test page</h1>
+    </>
+  )
+}
 
-export default Pagetest;
+export default page
