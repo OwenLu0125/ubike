@@ -25,13 +25,15 @@ header {
   flex-direction: column;
   left: 7%;
   top: 2rem;
+  width: 5rem;
 }
-.btn-primary {
+.login {
   position: fixed;
-  width: auto;
+  width: 5rem;
+  height: 3rem;
   background-color: #fff;
   color: #b5cc22;
-  bottom: 20rem;
+  bottom: 10rem;
   left: 7%;
   border: 0px;
   border-radius: 28px;
@@ -139,6 +141,7 @@ header {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
     padding-left: 2rem;
   }
   /*導覽項目 CSS 樣式設定復原*/
@@ -156,7 +159,7 @@ header {
     all: unset;
     display: flex;
     width: 100%;
-    height: 60px;
+    height: 104px;
     text-align: center;
     background: #ffffff;
     z-index: 999;
@@ -174,13 +177,13 @@ header {
     align-items: center;
     grid-gap: 2rem;
   }
-  .btn-primary {
+  .login {
     all: unset;
+    width: 5rem;
+    height: 2.5rem;
     background-color: #b5cc22;
     color: #fff;
-    width: 4rem;
-    height: auto;
-    margin: 0.5rem;
     border-radius: 28px;
+    cursor: pointer;
   }
 }

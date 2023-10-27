@@ -38,7 +38,7 @@ const Navbar = () => {
               </a>
             </li>
           </ul>
-          <button className='btn btn-primary'>登入</button>
+          <button className='login'>登入</button>
         </nav>
         <label className='navbar-toggle-label' htmlFor='navbar-toggle'>
           <span className='hamburger'></span>

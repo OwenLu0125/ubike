@@ -30,6 +30,7 @@ tbody tr:nth-child(even) {
 tbody td:nth-child(4),
 tbody td:nth-child(5) {
   color: #b5cc22;
+  font-weight: bold;
 }
 
 tbody td {

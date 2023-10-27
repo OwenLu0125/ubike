@@ -520,8 +520,8 @@ export const dummy = [
     infoDate: '2023-10-23',
   },
 ];
- export const area_data = {
-  臺北市: [
+export const area_data = {
+  台北市: [
     '中正區',
     '大同區',
     '中山區',

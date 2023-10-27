@@ -39,7 +39,7 @@ const DataTable: React.FC<DataTableProps> = ({
             <tr key={item.sno}>
               <td>{selectedCity}</td>
               <td>{item.sarea}</td>
-              <td>{item.sna}</td>
+              <td>{item.sna.slice(11)}</td>
               <td>{item.tot}</td>
               <td>{item.bemp}</td>
             </tr>
