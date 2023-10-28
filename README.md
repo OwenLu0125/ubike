@@ -3,11 +3,13 @@
 ## 使用技術
 
 - Next.js
+- TypeScript
 - Tailwind CSS
+- MUI
 
 ## 使用說明
 
-[Live demo](https://ubike-gmeck0lgt-owenlu0125s-projects.vercel.app)
+[Live demo](https://ubike-49p3dxfzk-owenlu0125s-projects.vercel.app/)
 
 可點擊上方連結查看專案，或依照下面步驟以啟動專案
 
