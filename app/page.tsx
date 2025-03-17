@@ -7,7 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import { IconButton, Input } from '@mui/joy';
 import Autocomplete from '@mui/joy/Autocomplete';
 import { BikeData } from './type';
-import { dummy, area_data } from '../public/dummyData';
+import { kaohsiungDummyData, area_data } from '../public/dummyData';
 
 type DistrictData = {
   [key: string]: boolean;
@@ -63,7 +63,7 @@ export default function MyComponent() {
     const loadData = (city: string) => {
       setLoading(true);
       if (city === '高雄市') {
-        setData(dummy);
+        setData(kaohsiungDummyData);
         setLoading(false);
       } else if (city === '台北市') {
         fetch(
